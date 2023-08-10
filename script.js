@@ -1,9 +1,10 @@
-const newBook = document.getElementById('new_book');
+const addBook = document.getElementById('addBook');
 const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector('.close');
-console.log(newBook);
+const submitBTN = document.querySelector('.submitBTN');
+console.log(addBook);
 
-newBook.addEventListener("click", function() {
+addBook.addEventListener("click", function() {
   modal.style.display = "block";
 }) 
 
@@ -28,8 +29,13 @@ function Book(name, author, pages, readBook) {
    this.readBook = readBook
 }
 
+function getInputValues() {
+ 
+}
+
 function addBookToLibrary() {
-    
+  let newBook = new Book();
+  myLibrary.push(newBook);
 }
 
 
@@ -43,6 +49,11 @@ function displayBooks() {
   })
   */
 }
+
+submitBTN.addEventListener('click', function(event) {
+  event.preventDefault();
+  console.log(document.querySelector('input[type="text"]').value);
+})
 
 
 
