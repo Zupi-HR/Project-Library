@@ -30,7 +30,7 @@ function Book(name, author, pages, readBook) {
 }
 
 function getInputValues() {
- 
+  
 }
 
 function addBookToLibrary() {
@@ -52,7 +52,6 @@ function displayBooks() {
 
 submitBTN.addEventListener('click', function(event) {
   event.preventDefault();
-  console.log(document.querySelector('input[type="text"]').value);
 })
 
 
