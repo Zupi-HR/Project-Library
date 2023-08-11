@@ -2,55 +2,71 @@ const addBook = document.getElementById('addBook');
 const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector('.close');
 const submitBTN = document.querySelector('.submitBTN');
-console.log(addBook);
+const booksContainer = document.querySelector('.books_container');
 
-addBook.addEventListener("click", function() {
-  modal.style.display = "block";
-}) 
+const myLibrary = [];
 
-closeBtn.addEventListener('click', function() {
-  modal.style.display = "none";
+addBook.addEventListener("click", function () {
+  modal.classList.remove('hidden');
 })
 
-window.addEventListener("click", function(event) {
+closeBtn.addEventListener('click', function () {
+  modal.classList.add('hidden');
+})
+
+window.addEventListener("click", function (event) {
   if (event.target == modal) {
-    modal.style.display = "none";
+    modal.classList.add('hidden');
   }
 })
-  
 
-let myLibrary = [];
+submitBTN.addEventListener('click', function() {
+  getInputValAndCreateObject();
+  displayBooks();
+  modal.classList.add('hidden');
+})
 
-function Book(name, author, pages, readBook) {
-    //costructor
-   this.name = name,
-   this.author = author,
-   this.pages = pages,
-   this.readBook = readBook
+function getInputValAndCreateObject() {
+  const title = document.getElementById('title').value;
+  const author = document.getElementById('author').value;
+  const pages = document.getElementById('pages').value;
+  const readStatus = document.getElementById('isRead').checked;
+  console.log(title,author, pages, readStatus);
+  const newBook = new Book(title, author, pages, readStatus);
+  addBookToLibrary(newBook);
 }
 
-function getInputValues() {
-  
+
+
+
+function Book(title, author, pages, isRead) {
+  //costructor
+  this.title = title,
+    this.author = author,
+    this.pages = pages,
+    this.readBook = isRead
 }
 
-function addBookToLibrary() {
-  let newBook = new Book();
-  myLibrary.push(newBook);
+
+
+function addBookToLibrary(book) {
+  myLibrary.push(book);
+  console.log(myLibrary);
 }
 
 
 function displayBooks() {
-  /*
+  
   myLibrary.forEach((element, index) => {
     const div = document.createElement('div');
-    div.innerHTML = `${element.title} ${element.pages}`;
-    div.classList.add('card');
-    container.appendChild(div);
+    div.classList.add('book');
+    div.innerHTML = `${element.title} ${element.author} ${element.pages}`;
+    booksContainer.appendChild(div);
   })
-  */
+  
 }
 
-submitBTN.addEventListener('click', function(event) {
+submitBTN.addEventListener('click', function (event) {
   event.preventDefault();
 })
 

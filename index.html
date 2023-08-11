@@ -11,7 +11,7 @@
 
 <body>
     <button id="addBook">Add book</button>
-    <div class="modal">
+    <div class="modal hidden">
         <form action="">
             <span class="close">&times;</span>
             <fieldset>
@@ -22,13 +22,20 @@
                 <label for="author">
                     <input type="text" id="author" name="author" placeholder="Author" required>
                 </label>
-                <input type="number" placeholder="Pages" min="1" required>
+                <input type="number" id="pages" placeholder="Pages" min="1" required>
+                <label for="readIt">
+                    Have you read it?
+                    <input type="checkbox" id="isRead" value="isRead">
+                </label>
             </fieldset>
             <div>
                 <button class="submitBTN" type="submit">Add</button>
                 <input type="reset" value="Reset">
             </div>
         </form>
+    </div>
+    <div class="books_container">
+        
     </div>
 </body>
 
