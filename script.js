@@ -4,7 +4,7 @@ const closeBtn = document.querySelector('.close');
 const submitBTN = document.querySelector('.submitBTN');
 const booksContainer = document.querySelector('.books_container');
 
-const myLibrary = [];
+let myLibrary = [];
 
 addBook.addEventListener("click", function () {
   modal.classList.remove('hidden');
@@ -20,10 +20,12 @@ window.addEventListener("click", function (event) {
   }
 })
 
-submitBTN.addEventListener('click', function() {
+submitBTN.addEventListener('click', function(event) {
+  event.preventDefault();
   getInputValAndCreateObject();
   displayBooks();
   modal.classList.add('hidden');
+  myLibrary.splice(0, myLibrary.length);
 })
 
 function getInputValAndCreateObject() {
@@ -36,39 +38,50 @@ function getInputValAndCreateObject() {
   addBookToLibrary(newBook);
 }
 
-
-
-
 function Book(title, author, pages, isRead) {
   //costructor
   this.title = title,
     this.author = author,
     this.pages = pages,
-    this.readBook = isRead
+    this.isRead = isRead
 }
-
-
 
 function addBookToLibrary(book) {
   myLibrary.push(book);
   console.log(myLibrary);
 }
 
-
 function displayBooks() {
   
   myLibrary.forEach((element, index) => {
-    const div = document.createElement('div');
-    div.classList.add('book');
-    div.innerHTML = `${element.title} ${element.author} ${element.pages}`;
-    booksContainer.appendChild(div);
+    //create book wrapper
+    const bookWrapper = document.createElement('div');
+    bookWrapper.classList.add('book');
+    // create books
+    const title = document.createElement('p');
+    const author = document.createElement('p');
+    const pages = document.createElement('p');
+    const readBTN = document.createElement('button');
+    readBTN.classList.add('readBTN');
+
+    // create book content
+    title.textContent = element.title;
+    author.textContent = element.author;
+    pages.textContent = element.pages + ' ' + 'pages';
+   if(element.isRead) {
+     readBTN.textContent = 'Read';
+     readBTN.classList.add('green');
+   } else {
+      readBTN.textContent = 'Not read'
+      readBTN.classList.add('red');
+   }
+
+    bookWrapper.append(title, author, pages, readBTN);
+    booksContainer.appendChild(bookWrapper);
   })
   
 }
 
-submitBTN.addEventListener('click', function (event) {
-  event.preventDefault();
-})
 
 
 
