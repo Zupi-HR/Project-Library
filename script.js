@@ -92,12 +92,11 @@ function displayBooks() {
 
     //attach event listener to delete button
     deleteBTN.addEventListener('click', function (event) {
-    /*  myLibrary.splice(bookWrapper.dataset.bookIndex, 1);
-      booksContainer.removeChild(bookWrapper);
-      */
       console.log(event.target.parentNode.dataset.bookIndex);
+       myLibrary.splice(event.target.parentNode.dataset.bookIndex, 1);
+     event.target.parentNode.remove();
 
-      
+
     })
 
 
