@@ -4,6 +4,7 @@ const closeBtn = document.querySelector('.close');
 const submitBTN = document.querySelector('.submitBTN');
 const booksContainer = document.querySelector('.books_container');
 
+
 let myLibrary = [];
 
 addBook.addEventListener("click", function () {
@@ -20,20 +21,26 @@ window.addEventListener("click", function (event) {
   }
 })
 
-submitBTN.addEventListener('click', function(event) {
+submitBTN.addEventListener('click', function (event) {
   event.preventDefault();
   getInputValAndCreateObject();
   displayBooks();
   modal.classList.add('hidden');
-  myLibrary.splice(0, myLibrary.length);
+
 })
+
+
+
+function removeObjectWIthDataset(array, dataset) {
+  const ObjWithIndex = arr.findIndex((obj))
+}
 
 function getInputValAndCreateObject() {
   const title = document.getElementById('title').value;
   const author = document.getElementById('author').value;
   const pages = document.getElementById('pages').value;
   const readStatus = document.getElementById('isRead').checked;
-  console.log(title,author, pages, readStatus);
+  console.log(title, author, pages, readStatus);
   const newBook = new Book(title, author, pages, readStatus);
   addBookToLibrary(newBook);
 }
@@ -52,36 +59,52 @@ function addBookToLibrary(book) {
 }
 
 function displayBooks() {
-  
-  myLibrary.forEach((element, index) => {
+
+  myLibrary.forEach((book, index) => {
+
     //create book wrapper
     const bookWrapper = document.createElement('div');
+    bookWrapper.dataset.bookIndex = index;
     bookWrapper.classList.add('book');
-    // create books
+    // create book content
     const title = document.createElement('p');
     const author = document.createElement('p');
     const pages = document.createElement('p');
     const readBTN = document.createElement('button');
     readBTN.classList.add('readBTN');
 
-    // create book content
-    title.textContent = element.title;
-    author.textContent = element.author;
-    pages.textContent = element.pages + ' ' + 'pages';
-   if(element.isRead) {
-     readBTN.textContent = 'Read';
-     readBTN.classList.add('green');
-   } else {
+    // connect book content with object
+    title.textContent = book.title;
+    author.textContent = book.author;
+    pages.textContent = book.pages + ' ' + 'pages';
+    if (book.isRead) {
+      readBTN.textContent = 'Read';
+      readBTN.classList.add('green');
+    } else {
       readBTN.textContent = 'Not read'
       readBTN.classList.add('red');
-   }
+    }
 
-    bookWrapper.append(title, author, pages, readBTN);
+    //create delete button 
+    const deleteBTN = document.createElement('button');
+    deleteBTN.textContent = "Delete";
+    deleteBTN.classList.add('deleteBTN');
+
+    //attach event listener to delete button
+    deleteBTN.addEventListener('click', function () {
+      myLibrary.splice(bookWrapper.dataset.bookIndex, 1);
+      booksContainer.removeChild(bookWrapper);
+      
+    })
+
+
+    bookWrapper.append(title, author, pages, readBTN, deleteBTN);
     booksContainer.appendChild(bookWrapper);
-  })
-  
-}
+    console.log(bookWrapper.dataset);
 
+  })
+
+}
 
 
 
