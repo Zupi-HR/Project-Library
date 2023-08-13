@@ -3,6 +3,8 @@ const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector('.close');
 const submitBTN = document.querySelector('.submitBTN');
 const booksContainer = document.querySelector('.books_container');
+let id = 0;
+let objWithIndex;
 
 
 let myLibrary = [];
@@ -32,9 +34,6 @@ submitBTN.addEventListener('click', function (event) {
 
 
 
-function removeObjectWIthDataset(array, dataset) {
-  const ObjWithIndex = arr.findIndex((obj))
-}
 
 function getInputValAndCreateObject() {
   const title = document.getElementById('title').value;
@@ -42,16 +41,19 @@ function getInputValAndCreateObject() {
   const pages = document.getElementById('pages').value;
   const readStatus = document.getElementById('isRead').checked;
   console.log(title, author, pages, readStatus);
-  const newBook = new Book(title, author, pages, readStatus);
+  const newBook = new Book(id, title, author, pages, readStatus);
+  id++;
   addBookToLibrary(newBook);
 }
 
-function Book(title, author, pages, isRead) {
+function Book(id, title, author, pages, isRead) {
   //costructor
+  this.id = id;
   this.title = title,
     this.author = author,
     this.pages = pages,
     this.isRead = isRead
+    
 }
 
 function addBookToLibrary(book) {
@@ -59,15 +61,31 @@ function addBookToLibrary(book) {
   console.log(myLibrary);
 }
 
+function deleteBook(event) {
+  console.log(event.target.parentNode.dataset.bookID);
+   objWithIndex = myLibrary.findIndex((obj) => {
+    obj.id === event.target.parentNode.dataset.bookID;
+    if(objWithIndex > -1) {
+      myLibrary.splice(objWithIndex, 1);
+    }
+    return myLibrary;
+  } )
+  
+  
+  myLibrary.splice(event.target.parentNode.dataset.bookID, 1);
+  event.target.parentNode.remove();
+  console.log(myLibrary);
+}
+
 function displayBooks() {
 
   myLibrary.forEach((book, index) => {
-   
+
     //create book wrapper
     const bookWrapper = document.createElement('div');
-    bookWrapper.dataset.bookIndex = index;
+    bookWrapper.dataset.bookID = index;
 
-    
+
     bookWrapper.classList.add('book');
     // create book content
     const title = document.createElement('p');
@@ -95,9 +113,8 @@ function displayBooks() {
 
     //attach event listener to delete button
     deleteBTN.addEventListener('click', function (event) {
-      myLibrary.splice(event.target.parentNode.dataset.bookIndex, 1);
-      event.target.parentNode.remove();
-      console.log(myLibrary);
+      deleteBook(event);
+
     })
 
     bookWrapper.append(title, author, pages, readBTN, deleteBTN);
