@@ -23,6 +23,7 @@ window.addEventListener("click", function (event) {
 
 submitBTN.addEventListener('click', function (event) {
   event.preventDefault();
+  booksContainer.textContent = "";
   getInputValAndCreateObject();
   displayBooks();
   modal.classList.add('hidden');
@@ -59,18 +60,14 @@ function addBookToLibrary(book) {
 }
 
 function displayBooks() {
-  myLibrary.forEach((book, index) => {
 
+  myLibrary.forEach((book, index) => {
+   
     //create book wrapper
     const bookWrapper = document.createElement('div');
     bookWrapper.dataset.bookIndex = index;
-    const allDOMbooks = document.querySelectorAll('.book');
-    allDOMbooks.forEach((element, elementINdex) => {
-      if (element.dataset.bookIndex === bookWrapper.dataset.bookIndex) {
-        element.remove();
-        
-      }
-    })
+
+    
     bookWrapper.classList.add('book');
     // create book content
     const title = document.createElement('p');
