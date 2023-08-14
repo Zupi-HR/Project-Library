@@ -3,7 +3,7 @@ const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector('.close');
 const submitBTN = document.querySelector('.submitBTN');
 const booksContainer = document.querySelector('.books_container');
-const readBTN = document.querySelector('.readBTN');
+let readBTN;
 
 
 let myLibrary = [];
@@ -58,8 +58,14 @@ function Book(id, title, author, pages, isRead) {
     
 }
 
-
-
+Book.prototype.changeReadStatus = function(readStatus) {
+  if (readStatus) {
+    readBTN.textContent = 'Read';
+    readBTN.classList.add('green');
+  } else {
+    readBTN.textContent = 'not read';
+  }
+}
 
 
 function addBookToLibrary(book) {
@@ -90,25 +96,19 @@ function displayBooks() {
     const bookWrapper = document.createElement('div');
     bookWrapper.dataset.bookID = index;
 
-
     bookWrapper.classList.add('book');
     // create book content
     const title = document.createElement('p');
     const author = document.createElement('p');
     const pages = document.createElement('p');
-    const readBTN = document.createElement('button');
+     readBTN = document.createElement('button');
     readBTN.classList.add('readBTN');
 
     // connect book content with object
     title.textContent = book.title;
     author.textContent = book.author;
     pages.textContent = book.pages + ' ' + 'pages';
-    if (book.isRead) {
-      readBTN.textContent = 'Read';
-      readBTN.classList.add('green');
-    } else {
-      readBTN.textContent = 'not read';
-    }
+   
 
     //create delete button 
     const deleteBTN = document.createElement('button');
