@@ -3,6 +3,7 @@ const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector('.close');
 const submitBTN = document.querySelector('.submitBTN');
 const booksContainer = document.querySelector('.books_container');
+const readBTN = document.querySelector('.readBTN');
 
 
 let myLibrary = [];
@@ -30,6 +31,10 @@ submitBTN.addEventListener('click', function (event) {
 
 })
 
+readBTN.addEventListener('click',function changeReadStatus() {
+  readBTN.classList.toggle('.green');
+});
+
 
 
 
@@ -53,6 +58,10 @@ function Book(id, title, author, pages, isRead) {
     
 }
 
+
+
+
+
 function addBookToLibrary(book) {
   myLibrary.push(book);
   console.log(myLibrary);
@@ -63,8 +72,6 @@ function deleteBook(event) {
   const objWithIndex = myLibrary.findIndex(object => {
     return object.id == bookIDToDelete;
   })
-  console.log(objWithIndex);
- 
  
    myLibrary.splice(objWithIndex, 1);
     event.target.parentNode.remove();
@@ -100,8 +107,7 @@ function displayBooks() {
       readBTN.textContent = 'Read';
       readBTN.classList.add('green');
     } else {
-      readBTN.textContent = 'Not read'
-      readBTN.classList.add('red');
+      readBTN.textContent = 'not read';
     }
 
     //create delete button 

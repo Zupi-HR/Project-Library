@@ -63,6 +63,10 @@ input[type="reset"] {
     gap: 10px;
 }
 
+.readBTN {
+    background-color: rgb(241, 24, 24);
+}
+
 .readBTN, .deleteBTN {
     padding: 15px 30px;
 }
@@ -73,6 +77,3 @@ input[type="reset"] {
     background-color: rgb(53, 231, 53);
 }
 
-.red {
-    background-color: rgb(241, 24, 24);
-}
