@@ -3,8 +3,6 @@ const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector('.close');
 const submitBTN = document.querySelector('.submitBTN');
 const booksContainer = document.querySelector('.books_container');
-let id = 0;
-let objWithIndex;
 
 
 let myLibrary = [];
@@ -41,8 +39,7 @@ function getInputValAndCreateObject() {
   const pages = document.getElementById('pages').value;
   const readStatus = document.getElementById('isRead').checked;
   console.log(title, author, pages, readStatus);
-  const newBook = new Book(id, title, author, pages, readStatus);
-  id++;
+  const newBook = new Book(undefined, title, author, pages, readStatus);
   addBookToLibrary(newBook);
 }
 
@@ -62,25 +59,26 @@ function addBookToLibrary(book) {
 }
 
 function deleteBook(event) {
-  console.log(event.target.parentNode.dataset.bookID);
-   objWithIndex = myLibrary.findIndex((obj) => {
-    obj.id === event.target.parentNode.dataset.bookID;
-    if(objWithIndex > -1) {
-      myLibrary.splice(objWithIndex, 1);
-    }
-    return myLibrary;
-  } )
+  const bookIDToDelete = event.target.parentNode.dataset.bookID;
+  const objWithIndex = myLibrary.findIndex(object => {
+    return object.id == bookIDToDelete;
+  })
+  console.log(objWithIndex);
+ 
+ 
+   myLibrary.splice(objWithIndex, 1);
+    event.target.parentNode.remove();
   
   
-  myLibrary.splice(event.target.parentNode.dataset.bookID, 1);
-  event.target.parentNode.remove();
   console.log(myLibrary);
 }
+  
+ 
 
 function displayBooks() {
 
   myLibrary.forEach((book, index) => {
-
+    book.id = index;
     //create book wrapper
     const bookWrapper = document.createElement('div');
     bookWrapper.dataset.bookID = index;
@@ -113,6 +111,7 @@ function displayBooks() {
 
     //attach event listener to delete button
     deleteBTN.addEventListener('click', function (event) {
+      console.log(book.id);
       deleteBook(event);
 
     })
