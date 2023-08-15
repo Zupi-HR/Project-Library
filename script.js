@@ -3,10 +3,27 @@ const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector('.close');
 const submitBTN = document.querySelector('.submitBTN');
 const booksContainer = document.querySelector('.books_container');
-let readBTN;
-
 
 let myLibrary = [];
+
+function Book(id, title, author, pages, isRead) {
+  //costructor
+  this.id = id;
+  this.title = title,
+    this.author = author,
+    this.pages = pages,
+    this.isRead = isRead
+    
+}
+
+Book.prototype.changeReadStatus = function(readBTN) {
+  if (this.isRead) {
+      readBTN.classList.add('green');
+      readBTN.textContent = "read";
+  } else {
+    readBTN.textContent = "Not Read";
+  }
+}
 
 addBook.addEventListener("click", function () {
   modal.classList.remove('hidden');
@@ -31,13 +48,6 @@ submitBTN.addEventListener('click', function (event) {
 
 })
 
-readBTN.addEventListener('click',function changeReadStatus() {
-  readBTN.classList.toggle('.green');
-});
-
-
-
-
 function getInputValAndCreateObject() {
   const title = document.getElementById('title').value;
   const author = document.getElementById('author').value;
@@ -48,24 +58,7 @@ function getInputValAndCreateObject() {
   addBookToLibrary(newBook);
 }
 
-function Book(id, title, author, pages, isRead) {
-  //costructor
-  this.id = id;
-  this.title = title,
-    this.author = author,
-    this.pages = pages,
-    this.isRead = isRead
-    
-}
 
-Book.prototype.changeReadStatus = function(readStatus) {
-  if (readStatus) {
-    readBTN.textContent = 'Read';
-    readBTN.classList.add('green');
-  } else {
-    readBTN.textContent = 'not read';
-  }
-}
 
 
 function addBookToLibrary(book) {
@@ -92,6 +85,7 @@ function displayBooks() {
 
   myLibrary.forEach((book, index) => {
     book.id = index;
+    
     //create book wrapper
     const bookWrapper = document.createElement('div');
     bookWrapper.dataset.bookID = index;
@@ -102,7 +96,20 @@ function displayBooks() {
     const author = document.createElement('p');
     const pages = document.createElement('p');
      readBTN = document.createElement('button');
-    readBTN.classList.add('readBTN');
+     readBTN.classList.add('readBTN');
+     book.changeReadStatus(readBTN);
+    readBTN.addEventListener('click', function(event) {
+       console.log(book.isRead);
+       event.target.classList.toggle('green');
+       if(event.target.classList.contains('green')) {
+        book.isRead = true;
+        book.changeReadStatus(event.target);
+       } else {
+        book.isRead = false;
+        book.changeReadStatus(event.target);
+       }
+       console.log(book.isRead);
+    })
 
     // connect book content with object
     title.textContent = book.title;
