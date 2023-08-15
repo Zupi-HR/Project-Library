@@ -7,7 +7,6 @@ const booksContainer = document.querySelector('.books_container');
 let myLibrary = [];
 
 function Book(id, title, author, pages, isRead) {
-  //costructor
   this.id = id;
   this.title = title,
     this.author = author,
