@@ -16,12 +16,13 @@ function Book(id, title, author, pages, isRead) {
     
 }
 
-Book.prototype.changeReadStatus = function(readBTN) {
+Book.prototype.changeReadStatusBTN = function(readBTN) {
   if (this.isRead) {
       readBTN.classList.add('green');
       readBTN.textContent = "read";
   } else {
     readBTN.textContent = "Not Read";
+    readBTN.classList.remove('green');
   }
 }
 
@@ -75,48 +76,43 @@ function deleteBook(event) {
    myLibrary.splice(objWithIndex, 1);
     event.target.parentNode.remove();
   
-  
   console.log(myLibrary);
 }
   
  
-
 function displayBooks() {
 
   myLibrary.forEach((book, index) => {
     book.id = index;
     
-    //create book wrapper
-    const bookWrapper = document.createElement('div');
-    bookWrapper.dataset.bookID = index;
-
-    bookWrapper.classList.add('book');
-    // create book content
+    //create book element
+    const bookElement = document.createElement('div');
+    bookElement.dataset.bookID = index;
+    bookElement.classList.add('book');
+    // create book element content
     const title = document.createElement('p');
     const author = document.createElement('p');
     const pages = document.createElement('p');
      readBTN = document.createElement('button');
      readBTN.classList.add('readBTN');
-     book.changeReadStatus(readBTN);
+     book.changeReadStatusBTN(readBTN);
     readBTN.addEventListener('click', function(event) {
        console.log(book.isRead);
-       event.target.classList.toggle('green');
-       if(event.target.classList.contains('green')) {
-        book.isRead = true;
-        book.changeReadStatus(event.target);
-       } else {
+       if(book.isRead) {
         book.isRead = false;
-        book.changeReadStatus(event.target);
+        book.changeReadStatusBTN(event.target);
+       } else {
+        book.isRead = true;
+        book.changeReadStatusBTN(event.target);
        }
        console.log(book.isRead);
     })
 
-    // connect book content with object
+    // connect book element content with object
     title.textContent = book.title;
     author.textContent = book.author;
     pages.textContent = book.pages + ' ' + 'pages';
    
-
     //create delete button 
     const deleteBTN = document.createElement('button');
     deleteBTN.textContent = "Delete";
@@ -128,12 +124,10 @@ function displayBooks() {
       deleteBook(event);
 
     })
-
-    bookWrapper.append(title, author, pages, readBTN, deleteBTN);
-    booksContainer.appendChild(bookWrapper);
-    console.log(bookWrapper.dataset);
-
-
+    //append everything
+    bookElement.append(title, author, pages, readBTN, deleteBTN);
+    booksContainer.appendChild(bookElement);
+    console.log(bookElement.dataset);
   })
 
 }
