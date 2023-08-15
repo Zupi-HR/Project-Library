@@ -10,12 +10,12 @@
 </head>
 
 <body>
-    <button id="addBook">Add book</button>
+    <button id="addBook">+ Add book</button>
     <div class="modal hidden">
         <form action="">
             <span class="close">&times;</span>
             <fieldset>
-                <legend>New Book</legend>
+                <h1>Add new book</h1>
                 <label for="title">
                     <input type="text" id="title" name="title" placeholder="Title" required>
                 </label>
@@ -24,7 +24,7 @@
                 </label>
                 <input type="number" id="pages" placeholder="Pages" min="1" required>
                 <label for="readIt">
-                    Have you read it?
+                    <span>Have you read it?</span>
                     <input type="checkbox" id="isRead" value="isRead">
                 </label>
             </fieldset>
