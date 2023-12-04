@@ -6,24 +6,72 @@ const booksContainer = document.querySelector('.books_container');
 
 let myLibrary = [];
 
-function Book(id, title, author, pages, isRead) {
-  this.id = id;
-  this.title = title,
-    this.author = author,
-    this.pages = pages,
-    this.isRead = isRead
-    
-}
+class Book {
+  #id;
+  #title;
+  #author
+  #pages;
+  #isRead;
 
-Book.prototype.changeReadStatusBTN = function(readBTN) {
-  if (this.isRead) {
+  constructor(id, title, author, pages, isRead) {
+    this.#id = id;
+    this.#title = title,
+      this.#author = author,
+      this.#pages = pages,
+      this.#isRead = isRead
+  }
+
+  changeReadStatusBTN(readBTN) {
+    if (this.#isRead) {
       readBTN.classList.add('green');
       readBTN.textContent = "read";
-  } else {
-    readBTN.textContent = "Not Read";
-    readBTN.classList.remove('green');
+    } else {
+      readBTN.textContent = "Not Read";
+      readBTN.classList.remove('green');
+    }
+  }
+
+  set id(value) {
+    this.#id = value;
+  }
+
+  get id() {
+    return this.#id;
+  }
+
+  set title(value) {
+    this.#title = value;
+  }
+
+  get title() {
+    return this.#title;
+  }
+
+  set author(value) {
+    this.#author = value;
+  }
+
+  get author() {
+    return this.#author;
+  }
+
+  set pages(value) {
+    this.#pages = value;
+  }
+
+  get pages() {
+    return this.#pages;
+  }
+
+  set isRead(value) {
+    this.#isRead = value;
+  }
+
+  get isRead() {
+    return this.#isRead;
   }
 }
+
 
 addBook.addEventListener("click", function () {
   modal.classList.remove('hidden');
@@ -43,9 +91,8 @@ submitBTN.addEventListener('click', function (event) {
   event.preventDefault();
   booksContainer.textContent = "";
   getInputValAndCreateObject();
-  displayBooks();
+  LibraryManager.displayBooks();
   modal.classList.add('hidden');
-
 })
 
 function getInputValAndCreateObject() {
@@ -55,80 +102,78 @@ function getInputValAndCreateObject() {
   const readStatus = document.getElementById('isRead').checked;
   console.log(title, author, pages, readStatus);
   const newBook = new Book(undefined, title, author, pages, readStatus);
-  addBookToLibrary(newBook);
+  LibraryManager.addBookToLibrary(newBook);
 }
 
+class LibraryManager {
 
+  static addBookToLibrary(book) {
+    myLibrary.push(book);
+    console.log(myLibrary);
+  }
 
+  static deleteBook(event) {
+    const bookIDToDelete = event.target.parentNode.dataset.bookID;
+    const objWithIndex = myLibrary.findIndex(object => {
+      return object.id == bookIDToDelete;
+    })
 
-function addBookToLibrary(book) {
-  myLibrary.push(book);
-  console.log(myLibrary);
-}
-
-function deleteBook(event) {
-  const bookIDToDelete = event.target.parentNode.dataset.bookID;
-  const objWithIndex = myLibrary.findIndex(object => {
-    return object.id == bookIDToDelete;
-  })
- 
-   myLibrary.splice(objWithIndex, 1);
+    myLibrary.splice(objWithIndex, 1);
     event.target.parentNode.remove();
-  
-  console.log(myLibrary);
-}
-  
- 
-function displayBooks() {
 
-  myLibrary.forEach((book, index) => {
-    book.id = index;
-    
-    //create book element
-    const bookElement = document.createElement('div');
-    bookElement.dataset.bookID = index;
-    bookElement.classList.add('book');
-    // create book element content
-    const title = document.createElement('p');
-    const author = document.createElement('p');
-    const pages = document.createElement('p');
-     readBTN = document.createElement('button');
-     readBTN.classList.add('readBTN');
-     book.changeReadStatusBTN(readBTN);
-    readBTN.addEventListener('click', function(event) {
-       console.log(book.isRead);
-       if(book.isRead) {
-        book.isRead = false;
-        book.changeReadStatusBTN(event.target);
-       } else {
-        book.isRead = true;
-        book.changeReadStatusBTN(event.target);
-       }
-       console.log(book.isRead);
+    console.log(myLibrary);
+  }
+
+
+  static displayBooks() {
+    myLibrary.forEach((book, index) => {
+      book.id = index;
+
+      //create book element
+      const bookElement = document.createElement('div');
+      bookElement.dataset.bookID = index;
+      bookElement.classList.add('book');
+      // create book element content
+      const title = document.createElement('p');
+      const author = document.createElement('p');
+      const pages = document.createElement('p');
+     const readBTN = document.createElement('button');
+      readBTN.classList.add('readBTN');
+      book.changeReadStatusBTN(readBTN);
+      readBTN.addEventListener('click', function (event) {
+        console.log(book.isRead);
+        if (book.isRead) {
+          book.isRead = false;
+          book.changeReadStatusBTN(event.target);
+        } else {
+          book.isRead = true;
+          book.changeReadStatusBTN(event.target);
+        }
+        console.log(book.isRead);
+      })
+
+      // connect book element content with object
+      title.textContent = book.title;
+      author.textContent = book.author;
+      pages.textContent = book.pages + ' ' + 'pages';
+
+      //create delete button 
+      const deleteBTN = document.createElement('button');
+      deleteBTN.textContent = "Delete";
+      deleteBTN.classList.add('deleteBTN');
+
+      //attach event listener to delete button
+      deleteBTN.addEventListener('click', function (event) {
+        console.log(book.id);
+        LibraryManager.deleteBook(event);
+
+      })
+      //append everything
+      bookElement.append(title, author, pages, readBTN, deleteBTN);
+      booksContainer.appendChild(bookElement);
+      console.log(bookElement.dataset);
     })
-
-    // connect book element content with object
-    title.textContent = book.title;
-    author.textContent = book.author;
-    pages.textContent = book.pages + ' ' + 'pages';
-   
-    //create delete button 
-    const deleteBTN = document.createElement('button');
-    deleteBTN.textContent = "Delete";
-    deleteBTN.classList.add('deleteBTN');
-
-    //attach event listener to delete button
-    deleteBTN.addEventListener('click', function (event) {
-      console.log(book.id);
-      deleteBook(event);
-
-    })
-    //append everything
-    bookElement.append(title, author, pages, readBTN, deleteBTN);
-    booksContainer.appendChild(bookElement);
-    console.log(bookElement.dataset);
-  })
-
+  }
 }
 
 
