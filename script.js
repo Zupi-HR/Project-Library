@@ -1,8 +1,12 @@
 const addBook = document.getElementById('addBook');
 const modal = document.querySelector(".modal");
 const closeBtn = document.querySelector('.close');
+const form = document.querySelector('form');
 const submitBTN = document.querySelector('.submitBTN');
 const booksContainer = document.querySelector('.books_container');
+const titleInput = document.getElementById('title');
+const authorInput = document.getElementById('author');
+const pagesInput = document.getElementById('pages');
 
 let myLibrary = [];
 
@@ -87,13 +91,6 @@ window.addEventListener("click", function (event) {
   }
 })
 
-submitBTN.addEventListener('click', function (event) {
-  event.preventDefault();
-  booksContainer.textContent = "";
-  getInputValAndCreateObject();
-  LibraryManager.displayBooks();
-  modal.classList.add('hidden');
-})
 
 function getInputValAndCreateObject() {
   const title = document.getElementById('title').value;
@@ -137,7 +134,7 @@ class LibraryManager {
       const title = document.createElement('p');
       const author = document.createElement('p');
       const pages = document.createElement('p');
-     const readBTN = document.createElement('button');
+      const readBTN = document.createElement('button');
       readBTN.classList.add('readBTN');
       book.changeReadStatusBTN(readBTN);
       readBTN.addEventListener('click', function (event) {
@@ -175,6 +172,43 @@ class LibraryManager {
     })
   }
 }
+
+
+form.addEventListener('submit', (event) => {
+  if (!form.checkValidity()) {
+    console.log('wrong form')
+    if (titleInput.validity.valueMissing) {
+      titleInput.setCustomValidity('Title field is empty');
+      titleInput.reportValidity();
+    } else {
+      titleInput.setCustomValidity('');
+    }
+
+    if (authorInput.validity.valueMissing) {
+      authorInput.setCustomValidity('Author field is empty');
+      authorInput.reportValidity();
+    } else {
+      authorInput.setCustomValidity('');
+    }
+
+    if (pagesInput.validity.valueMissing) {
+      pagesInput.setCustomValidity('Please enter number of pages');
+      pagesInput.reportValidity();
+    } else {
+      pagesInput.setCustomValidity('');
+    }
+
+    event.preventDefault();
+  } else {
+    event.preventDefault();
+    booksContainer.textContent = "";
+    getInputValAndCreateObject();
+    LibraryManager.displayBooks();
+    modal.classList.add('hidden');
+  }
+});
+
+
 
 
 
